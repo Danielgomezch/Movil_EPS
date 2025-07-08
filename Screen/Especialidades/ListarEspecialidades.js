@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f5f5f5", // Color de fondo
+        backgroundColor: "#f5f5f5", 
     },
     title: {
         fontSize: 24,
@@ -34,15 +34,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     button: {
-        backgroundColor: "#007BFF", // Color de fondo del botón
+        backgroundColor: "#007BFF", 
         padding: 15,
         borderRadius: 5,
         marginVertical: 10,
-        width: "80%", // Ancho del botón
-        alignItems: "center", // Centrar texto
+        width: "80%",
+        alignItems: "center", 
     },
     buttonText: {
-        color: "#FFFFFF", // Color del texto del botón
+        color: "#FFFFFF",
         fontSize: 18,
         fontWeight: "600",
     },

@@ -14,12 +14,12 @@ export default function CitasStack () {
                 component={ListarCitas}
                 options={{
                     title: "Citas",
-                    headerStyle: { // <-- Estilo de encabezado para esta pantalla
-                        backgroundColor: '#4A90E2', // Color azul
+                    headerStyle: {
+                        backgroundColor: '#4A90E2', 
                     },
-                    headerTintColor: '#fff', // Color blanco para el texto del título y el icono de retroceso
+                    headerTintColor: '#fff',
                     headerTitleStyle: {
-                        fontWeight: 'bold', // Título en negrita
+                        fontWeight: 'bold', 
                     },
                 }}
             />
@@ -28,8 +28,8 @@ export default function CitasStack () {
                 component={DetalleCitas}
                 options={{
                     title: "Detalle citas",
-                    headerStyle: { // <-- Estilo de encabezado para esta pantalla
-                        backgroundColor: '#4A90E2', // Mismo color para consistencia
+                    headerStyle: {
+                        backgroundColor: '#4A90E2', 
                     },
                     headerTintColor: '#fff',
                     headerTitleStyle: {
@@ -42,8 +42,8 @@ export default function CitasStack () {
                 component={EditarCitas}
                 options={{
                     title: "Nuevo/Editar Citas",
-                    headerStyle: { // <-- Estilo de encabezado para esta pantalla
-                        backgroundColor: '#4A90E2', // Mismo color para consistencia
+                    headerStyle: { 
+                        backgroundColor: '#4A90E2',
                     },
                     headerTintColor: '#fff',
                     headerTitleStyle: {

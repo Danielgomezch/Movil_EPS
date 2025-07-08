@@ -15,12 +15,10 @@ const RutasPublicas = ['/login', '/registrar'];
 
 
 api.interceptors.request.use(
-    //verifica si la ruta es pública
     async (config) => {
         const iSRutaPublica = RutasPublicas.some(ruta => config.url.includes(ruta));
         
         if (!iSRutaPublica) {
-            //solo añadir token a rutas protegidas
             const userToken = await AsyncStorage.getItem("userToken");
             if (userToken) {
                 config.headers.Authorization = `Bearer ${userToken}`;

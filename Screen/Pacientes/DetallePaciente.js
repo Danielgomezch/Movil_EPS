@@ -23,7 +23,6 @@ const DetallePaciente = ({ route }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-      {/* Header con foto y nombre */}
       <View style={styles.header}>
         <Image 
           source={{ uri: datos.imagen }}
@@ -36,7 +35,6 @@ const DetallePaciente = ({ route }) => {
         </Text>
       </View>
 
-      {/* Sección de información de contacto */}
       <View style={styles.seccion}>
         <Text style={styles.tituloSeccion}>Información de contacto</Text>
         
@@ -56,7 +54,6 @@ const DetallePaciente = ({ route }) => {
         </View>
       </View>
 
-      {/* Sección médica */}
       <View style={styles.seccion}>
         <Text style={styles.tituloSeccion}>Información médica</Text>
         
@@ -73,12 +70,10 @@ const DetallePaciente = ({ route }) => {
         )}
       </View>
 
-      {/* Sección adicional para citas recientes podría ir aquí */}
     </ScrollView>
   );
 };
 
-// Función para calcular edad si tenemos fecha de nacimiento
 function calcularEdad(fechaNacimiento) {
   if (!fechaNacimiento) return '';
   

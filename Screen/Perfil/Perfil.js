@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
   ContainerPerfil: {
     width: "100%",
     padding: 20,
-    backgroundColor: "#FFFFFF", // Fondo blanco
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, // Sombra para Android
+    elevation: 3, 
     marginBottom: 20,
   },
   profileText: {

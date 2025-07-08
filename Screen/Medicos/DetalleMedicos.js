@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'; // Importa ScrollView desde react-native
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 
 const DetalleMedicos = ({ route }) => {
   const { medico } = route.params || {};
@@ -21,7 +21,6 @@ const DetalleMedicos = ({ route }) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Encabezado con imagen */}
         <View style={styles.header}>
           <Image 
             source={{ uri: datos.imagen }} 
@@ -33,7 +32,6 @@ const DetalleMedicos = ({ route }) => {
           <Text style={styles.especialidad}>{datos.especialidad}</Text>
         </View>
 
-        {/* Información profesional */}
         <View style={styles.seccion}>
           <Text style={styles.tituloSeccion}>Información Profesional</Text>
           <View style={styles.item}>
@@ -49,7 +47,6 @@ const DetalleMedicos = ({ route }) => {
           )}
         </View>
 
-        {/* Datos de contacto */}
         <View style={styles.seccion}>
           <Text style={styles.tituloSeccion}>Contacto</Text>
           <View style={styles.item}>
@@ -62,7 +59,6 @@ const DetalleMedicos = ({ route }) => {
           </View>
         </View>
 
-        {/* Horario */}
         <View style={styles.seccion}>
           <Text style={styles.tituloSeccion}>Horario de atención</Text>
           <Text style={styles.horario}>{datos.horario}</Text>

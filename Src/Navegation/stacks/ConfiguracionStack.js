@@ -8,8 +8,8 @@ export default function ConfiguracionesStack () {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name= "Configuracion" // El nombre de la pantalla
-                component={Configuración} // El componente de la pantalla
+                name= "Configuracion" 
+                component={Configuración}
                 options={{ title: "Configuraciones" }}
             />
         </Stack.Navigator>
