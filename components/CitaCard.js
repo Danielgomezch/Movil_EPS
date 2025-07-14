@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';  
 
 // Componente principal PasientesCard
-export default function PasientesCard({ pasientes, onEdit, onDelete }) {
+export default function CitasCard({ citas, onEdit, onDelete }) {
     // Estado para mostrar/ocultar detalles del paciente
     const [showDetails, setShowDetails] = useState(false);
 
@@ -15,16 +15,16 @@ export default function PasientesCard({ pasientes, onEdit, onDelete }) {
                 {/* Botón táctil que alterna la visibilidad de los detalles */}
                 <TouchableOpacity onPress={() => setShowDetails(!showDetails)}>
                     {/* Muestra el nombre del paciente */}
-                    <Text style={style.nombre}>Nombre paciente: {pasientes?.nombre}</Text>
+                    <Text style={style.nombre}>información de la cita: {citas?.nombre}</Text>
                     {showDetails && (
                         <>
                             {/* Detalles que se muestran si showDetails es true */}
-                            <Text style={style.detalle}>Apellido del paciente: {pasientes.apellido}</Text>
-                            <Text style={style.detalle}>Número de documento: {pasientes.num_documento}</Text>
-                            <Text style={style.detalle}>Tipo de documento: {pasientes.tipo_documento}</Text>
-                            <Text style={style.detalle}>Género del paciente: {pasientes.genero}</Text>
-                            <Text style={style.detalle}>Número de teléfono: {pasientes.num_telefono}</Text>
-                            <Text style={style.detalle}>Correo del paciente: {pasientes.correo}</Text>
+                            <Text style={style.detalle}>Fecha: {citas.fecha}</Text>
+                            <Text style={style.detalle}>Hora: {citas.hora}</Text>
+                            <Text style={style.detalle}>Estado: {citas.estado}</Text>
+                            <Text style={style.detalle}>Motivo: {citas.motivo}</Text>
+                            <Text style={style.detalle}>Observación: {citas.observacion}</Text>
+                            <Text style={style.detalle}>Tipo de la consulta: {citas.tipo_consulta}</Text>
                         </>
                     )}
                 </TouchableOpacity>

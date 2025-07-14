@@ -1,55 +1,36 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import ListarPaciente from "../../../Screen/Pacientes/ListarPaciente";
-import DetallePaciente from "../../../Screen/Pacientes/DetallePaciente";
-import EditarPaciente from "../../../Screen/Pacientes/EditarPaciente";
+import React from 'react';  // React
+import { createStackNavigator } from '@react-navigation/stack';  
+import { createNativeStackNavigator } from "@react-navigation/native-stack";  
 
-const Stack = createStackNavigator();
+// Importación de las pantallas
+import ListarPasientes from '../../../Screen/Pacientes/ListarPaciente'; 
+import DetallePasientes from '../../../Screen/Pacientes/DetallePaciente';  
+import EditarPasientes from '../../../Screen/Pacientes/EditarPaciente';
 
-export default function PacienteStack () {
+// Crea el stack navigator
+const Stack = createNativeStackNavigator();
+
+// Componente principal PacienteStack
+export default function PacienteStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen
-                name= "ListarPaciente"
-                component={ListarPaciente}
-                options={{
-                    title: "Paciente",
-                    headerStyle: {
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+            {/* Pantalla para listar pacientes */}
+            <Stack.Screen 
+                name="listarPasientes" 
+                component={ListarPasientes} 
+                options={{ title: "Pacientes" }} 
             />
-            <Stack.Screen
-                name= "DetallePaciente"
-                component={DetallePaciente}
-                options={{
-                    title: "Detalle Paciente",
-                    headerStyle: {
-                        backgroundColor: '#4A90E2',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+            {/* Pantalla para editar o crear pacientes */}
+            <Stack.Screen 
+                name="editarPasientes" 
+                component={EditarPasientes} 
+                options={{ title: "Nuevo/Editar Pacientes" }} 
             />
-            <Stack.Screen
-                name= "EditarPaciente"
-                component={EditarPaciente}
-                options={{
-                    title: "Nuevo/Editar Paciente",
-                    headerStyle: { 
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+            {/* Pantalla para mostrar detalles de un paciente */}
+            <Stack.Screen 
+                name="DetallePasientes"  
+                component={DetallePasientes} 
+                options={{ title: "Detalles Pacientes" }} 
             />
         </Stack.Navigator>
     );

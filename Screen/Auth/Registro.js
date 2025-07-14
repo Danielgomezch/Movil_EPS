@@ -1,22 +1,49 @@
-import { View, Text, TextInput, StyleSheet } from "react-native"
-import BottonComponent from "../../components/BottonComponent"
-import react, { useState } from "react";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import React , { useState } from "react";
+import BottonComponent from "../../components/BottonComponent";
+import {registroUser} from "../../Src/Services/AuthService";
 
-export default function RegistroScreen({navigation}){
-    const [nombre, setNombre] = useState("");
-    const [email, setEmail] = useState(""); 
-    const [telefono, setTelefono] = useState("");
+
+
+export default function RegistroScreen({ navigation }) {
+    const [name, setName] = useState("");
+    const [role, setRole] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmarPassword, setConfirmarPassword] = useState("");
 
-    return(
+    const handleRegister = async () => {
+        if (!name || !email || !password || !role) {
+            return Alert.alert("Error", "Todos los campos son obligatorios");
+        }
+
+
+        const result = await registroUser(name, email, password, role);
+ 
+
+        if (result.success) {
+            Alert.alert("Éxito", "Registro exitoso", [
+                { text: "OK", onPress: () => navigation.navigate("InicioStacks") },
+            ]);
+        } else {
+            Alert.alert("Error", result.message || "No se pudo registrar");
+        }
+    };
+
+    return (
         <View style={styles.container}>
-            <Text style={styles.title}>Registro</Text>
+            <Text style={styles.title}> Registro</Text>
+
             <TextInput
                 style={styles.input}
-                placeholder="Nombre Completo"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="Nombre"
+                value={name}
+                onChangeText={setName}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Rol"
+                value={role}
+                onChangeText={setRole}
             />
             <TextInput
                 style={styles.input}
@@ -24,62 +51,44 @@ export default function RegistroScreen({navigation}){
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Teléfono"
-                value={telefono}
-                onChangeText={setTelefono}
-                keyboardType="phone-pad"
             />
             <TextInput
                 style={styles.input}
                 placeholder="Contraseña"
-                secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Confirmar Contraseña"
                 secureTextEntry
-                value={confirmarPassword}
-                onChangeText={setConfirmarPassword}
             />
+
             <BottonComponent
                 title="Registrarse"
-                onPress={() => console.log("Registro")}
+                onPress={handleRegister}
             />
+
             <BottonComponent
-                title="Iniciar Sesión"
+                title="Ir a Login"
                 onPress={() => navigation.navigate("Login")}
             />
         </View>
-    )
-
+    );
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        padding: 16,
-        backgroundColor: "#f5f5f5",
+        padding: 20,
+        justifyContent: 'center',
     },
     title: {
         fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 24,
-        textAlign: "center",
+        marginBottom: 20,
+        textAlign: 'center',
     },
     input: {
-        height: 50,
-        borderColor: "#ccc",
+        height: 40,
+        borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 16,
-        marginBottom: 16,
+        marginBottom: 15,
+        paddingLeft: 8,
     },
 });

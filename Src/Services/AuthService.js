@@ -5,11 +5,11 @@ export const loginUser = async (email, password) => {
     try {
         const response = await api.post("/login", { email, password });
         console.log("Respuesta de la API:", response.data);
-        const { access_token } = response.data;
+        const { token } = response.data;
 
-        if (access_token) {
-            await AsyncStorage.setItem("userToken", access_token);
-            return { success: true, token: access_token };
+        if (token) {
+            await AsyncStorage.setItem("userToken", token);
+            return { success: true, token };
         } else {
             console.error("Token no recibido en la respuesta");
             throw new Error("Token no recibido");
