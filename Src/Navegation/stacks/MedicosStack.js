@@ -1,3 +1,5 @@
+// Archivo: Src/Navegation/stacks/MedicosStack.js
+
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import ListarMedicos from "../../../Screen/Medicos/ListarMedicos";
@@ -9,47 +11,21 @@ const Stack = createStackNavigator();
 export default function MedicosStack () {
     return (
         <Stack.Navigator>
+            {/* --- CORRECCIÓN: Nombres en camelCase --- */}
             <Stack.Screen
-                name= "ListarMedicos"
+                name="listarMedicos"
                 component={ListarMedicos}
-                options={{
-                    title: "Medicos",
-                    headerStyle: { 
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+                options={{ title: "Médicos" }}
             />
             <Stack.Screen
-                name= "DetalleMedicos"
+                name="detalleMedicos"
                 component={DetalleMedicos}
-                options={{
-                    title: "Detalle Medicos",
-                    headerStyle: { 
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+                options={{ title: "Detalle del Médico" }}
             />
             <Stack.Screen
-                name= "EditarMedicos"
+                name="editarMedicos"
                 component={EditarMedicos}
-                options={{
-                    title: "Nuevo/Editar Medicos",
-                    headerStyle: { 
-                        backgroundColor: '#4A90E2',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+                options={{ title: "Nuevo/Editar Médico" }}
             />
         </Stack.Navigator>
     );

@@ -1,203 +1,151 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Platform, ScrollView, KeyboardAvoidingView } from "react-native";
-import React, { useState } from "react";  
-import { useNavigation, useRoute } from "@react-navigation/native";  
-import { crearCitas, editarCitas } from "../../Src/Services/PacienteService";  
-// Componente principal EditarCitaScreen
-export default function EditarCitaScreen() {
-  const navigation = useNavigation();  // Hook para la navegación
-  const route = useRoute();  // Hook para acceder a los parámetros de la ruta
+import React, { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { crearCitas, editarCitas } from "../../Src/Services/CitaService";
 
-  const citas = route.params?.citas;  // Obtiene la cita a editar desde los parámetros de la ruta
+export default function EditarCitasScreen() {
+    const navigation = useNavigation();
+    const route = useRoute();
+    const cita = route.params?.cita;
 
-  // Estados para los campos del formulario
-  const [idPacientes, setIdPacientes] = useState(citas?.id?.toString() || "");
-  const [idMedicos, setIdMedicos] = useState(citas?.idMedicos?.toString() || "");
-  const [fecha, setFecha] = useState(citas?.fecha?.toString() || "");
-  const [hora, setHora] = useState(citas?.hora?.toString() || "");
-  const [estado, setEstado] = useState(citas?.estado?.toString() || "");
-  const [motivo, setMotivo] = useState(citas?.motivo?.toString() || "");
-  const [observacion, setObservacion] = useState(citas?.observacion?.toString() || "");
-  const [tipo_consulta, setTipo_consulta] = useState(citas?.tipo_consulta?.toString() || "");
-  const [loading, setLoading] = useState(false);  // Estado para controlar el loading
+    // --- CORRECCIÓN: Se añaden los tres estados para los IDs ---
+    const [idPasientes, setIdPasientes] = useState(cita?.idPasientes?.toString() || "");
+    const [idMedicos, setIdMedicos] = useState(cita?.idMedicos?.toString() || "");
+    const [idConsultorios, setIdConsultorios] = useState(cita?.idConsultorios?.toString() || "");
+    
+    // Resto de los estados
+    const [fecha, setFecha] = useState(cita?.fecha || "");
+    const [hora, setHora] = useState(cita?.hora || "");
+    const [estado, setEstado] = useState(cita?.estado || "");
+    const [motivo, setMotivo] = useState(cita?.motivo || "");
+    const [observacion, setObservacion] = useState(cita?.observacion || "");
+    const [tipo_consulta, setTipo_consulta] = useState(cita?.tipo_consulta || "");
+    const [loading, setLoading] = useState(false);
 
-  const esEdicion = !!citas;  // Determina si es una edición o una nueva creación
+    const esEdicion = !!cita;
 
-  // Función para manejar el guardado del paciente
-  const handleGuardar = async () => {
-    // Validación de campos obligatorios
-    if (!idPacientes || !idMedicos || !fecha || !hora || !estado || !motivo || !observacion || !tipo_consulta) {
-      Alert.alert("Error", "Todos los campos son obligatorios");
-      return;
+    const handleGuardar = async () => {
+        // --- CORRECCIÓN: Se valida que los tres IDs estén presentes ---
+        if (!idPasientes || !idMedicos || !idConsultorios || !fecha || !hora || !estado || !motivo || !observacion || !tipo_consulta) {
+            Alert.alert("Error", "Todos los campos son obligatorios");
+            return;
+        }
+        setLoading(true);
+
+        try {
+            // --- CORRECCIÓN: Se envían los tres IDs a la API ---
+            const datosCita = {
+                idPasientes: parseInt(idPasientes, 10),
+                idMedicos: parseInt(idMedicos, 10),
+                idConsultorios: parseInt(idConsultorios, 10),
+                fecha, hora, estado, motivo, observacion, tipo_consulta,
+            };
+            
+            let result;
+            if (esEdicion) {
+                result = await editarCitas(cita.id, datosCita);
+            } else {
+                result = await crearCitas(datosCita);
+            }
+
+            if (result.success) {
+                Alert.alert("Éxito", esEdicion ? "Cita actualizada" : "Cita creada");
+                navigation.goBack();
+            } else {
+                Alert.alert("Error", result.message || "Error al guardar la cita");
+            }
+        } catch (error) {
+            Alert.alert("Error", "Ocurrió un error inesperado al guardar la cita.");
+        } finally {
+            setLoading(false);
+        }
     }
-    setLoading(true);  // Activa el loading
-    try {
-      let result;
 
-      // Llama a la función de editar o crear según corresponda
-      if (esEdicion) {
-        result = await editarCita(citas.id, {
-          fecha,
-          hora,
-          estado,
-          motivo,
-          observacion,
-          tipo_consulta
-        });
-      } else {
-        result = await crearCitas({ idPacientes, idMedicos, fecha, hora, estado, motivo, observacion, tipo_consulta });
-      }
+    return (
+        <KeyboardAvoidingView style={styles.keyboardContainer} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+                <Text style={styles.titulo}>{esEdicion ? "Editar Cita" : "Nueva Cita"}</Text>
 
-      // Manejo de la respuesta
-      if (result.success) {
-        Alert.alert("Éxito", esEdicion ? "Cita actualizada" : "Cita creada");
-        navigation.goBack();  // Regresa a la pantalla anterior
-      } else {
-        Alert.alert("Error", result.message || "Error al guardar la cita");
-      }
-    } catch (error) {
-      Alert.alert("Error", "Error al guardar la cita");
-    } finally {
-      setLoading(false);  // Desactiva el loading
-    }
-  }
+                {/* --- CORRECCIÓN: Se añaden los tres campos de ID --- */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>ID del Paciente</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese el ID del paciente"
+                        value={idPasientes}
+                        onChangeText={setIdPasientes}
+                        keyboardType="numeric"
+                        editable={!esEdicion}
+                    />
+                </View>
 
-  return (
-    <KeyboardAvoidingView
-      style={styles.keyboardContainer}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Text style={styles.titulo}>Nueva Cita</Text>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>ID del Médico</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese el ID del médico"
+                        value={idMedicos}
+                        onChangeText={setIdMedicos}
+                        keyboardType="numeric"
+                        editable={!esEdicion}
+                    />
+                </View>
 
-        {/* Campos del formulario */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Fecha</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Fecha de la cita"
-            value={fecha}
-            onChangeText={setFecha}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Hora</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Hora de la cita"
-            value={hora}
-            onChangeText={setHora}
-            keyboardType="numeric"
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Estado</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Estado de la cita"
-            value={estado}
-            onChangeText={setEstado}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Motivo</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Motivo de la cita"
-            value={motivo}
-            onChangeText={setMotivo}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Observación</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Observación"
-            value={observacion}
-            onChangeText={setObservacion}
-          />
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>tipo_consulta</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="tipo_consulta"
-            value={tipo_consulta}
-            onChangeText={setTipo_consulta}
-          />
-        </View>
-
-        {/* Botón para guardar el paciente */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleGuardar}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text style={styles.buttonText}>Guardar Cita</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>ID del Consultorio</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese el ID del consultorio"
+                        value={idConsultorios}
+                        onChangeText={setIdConsultorios}
+                        keyboardType="numeric"
+                        editable={!esEdicion}
+                    />
+                </View>
+                
+                {/* Resto del formulario */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Fecha</Text>
+                    <TextInput style={styles.input} placeholder="AAAA-MM-DD" value={fecha} onChangeText={setFecha} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Hora</Text>
+                    <TextInput style={styles.input} placeholder="HH:MM:SS" value={hora} onChangeText={setHora} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Estado</Text>
+                    <TextInput style={styles.input} placeholder="Estado de la cita" value={estado} onChangeText={setEstado} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Motivo</Text>
+                    <TextInput style={styles.input} placeholder="Motivo de la cita" value={motivo} onChangeText={setMotivo} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Observación</Text>
+                    <TextInput style={styles.input} placeholder="Observación" value={observacion} onChangeText={setObservacion} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Tipo de Consulta</Text>
+                    <TextInput style={styles.input} placeholder="Tipo de consulta" value={tipo_consulta} onChangeText={setTipo_consulta} />
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleGuardar} disabled={loading}>
+                        {loading ? <ActivityIndicator color="white" /> : <Text style={styles.buttonText}>Guardar Cita</Text>}
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
+    );
 }
 
-// Estilos del componente
 const styles = StyleSheet.create({
-  keyboardContainer: {
-    flex: 1,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 20,
-    paddingBottom: 40,
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-    color: "#333",
-  },
-  inputContainer: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: "#555",
-  },
-  input: {
-    backgroundColor: "#f8f8f8",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-  },
-  buttonContainer: {
-    marginTop: 20,
-  },
-  button: {
-    backgroundColor: "#88CCFF",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+    keyboardContainer: { flex: 1 },
+    scrollContainer: { flexGrow: 1, padding: 20 },
+    titulo: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center", color: "#333" },
+    inputContainer: { marginBottom: 15 },
+    label: { fontSize: 16, marginBottom: 5, color: "#555" },
+    input: { backgroundColor: "#f8f8f8", borderWidth: 1, borderColor: "#ddd", borderRadius: 8, padding: 12, fontSize: 16 },
+    buttonContainer: { marginTop: 20 },
+    button: { backgroundColor: "#88CCFF", padding: 15, borderRadius: 8, alignItems: "center" },
+    buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
 });

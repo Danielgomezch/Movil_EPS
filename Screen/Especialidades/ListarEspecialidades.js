@@ -1,49 +1,142 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+// Archivo: Screen/Especialidades/ListarEspecialidades.js
 
-export default function ListarEspecialidades({ navigation }) {
+import React, { useEffect, useState } from "react";
+import { View, Text, Alert, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+// --- CORRECCIÓN ---
+// Se importan las funciones con los nombres correctos del servicio (singular)
+import { listarEspecialidad, eliminarEspecialidad } from "../../Src/Services/EspecialidadService";
+import EspecialidadCard from "../../components/especialidadCard";
+
+export default function ListarEspecialidadesScreen() {
+    const [especialidades, setEspecialidades] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigation = useNavigation();
+
+    const handleCargarEspecialidades = async () => {
+        setLoading(true);
+        try {
+            // Se llama a la función correcta
+            const result = await listarEspecialidad();
+            if (result.success) {
+                // Se añade la lógica para manejar datos anidados
+                if (Array.isArray(result.data)) {
+                    setEspecialidades(result.data);
+                } else if (result.data && Array.isArray(result.data.data)) {
+                    setEspecialidades(result.data.data);
+                } else {
+                    Alert.alert("Error de Datos", "La respuesta del servidor no tiene el formato esperado.");
+                }
+            } else {
+                Alert.alert("Error", result.message || "No se pudieron cargar las especialidades");
+            }
+        } catch (error) {
+            Alert.alert("Error", "No se pudieron cargar las especialidades");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", handleCargarEspecialidades);
+        return unsubscribe;
+    }, [navigation]);
+
+    const handleEliminar = (id) => {
+        Alert.alert(
+            "Eliminar especialidad",
+            "¿Estás seguro que deseas eliminar esta especialidad?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Eliminar",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            // Se llama a la función correcta
+                            const result = await eliminarEspecialidad(id);
+                            if (result.success) {
+                                handleCargarEspecialidades();
+                            } else {
+                                Alert.alert("Error", result.message || "No se pudo eliminar la especialidad");
+                            }
+                        } catch (error) {
+                            Alert.alert("Error", "No se pudo eliminar la especialidad");
+                        }
+                    },
+                },
+            ]
+        );
+    };
+
+    const handleEditar = (especialidad) => {
+        // --- CORRECCIÓN ---
+        // Se usa el nombre de la ruta de edición correcto
+        navigation.navigate("EditarEspecialidades", { especialidad });
+    };
+
+    const handleCrear = () => {
+        // --- CORRECCIÓN ---
+        // Se usa el nombre de la ruta de edición/creación correcto
+        navigation.navigate("EditarEspecialidades");
+    };
+    
+    if (loading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color="#66B2FF" />
+            </View>
+        );
+    }
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Listar Especialidades</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("DetalleEspecialidades")}
-            >
-                <Text style={styles.buttonText}>Ver Especialidad</Text>
+        <SafeAreaView style={{ flex: 1 }}>
+            <FlatList
+                data={especialidades}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <EspecialidadCard
+                        especialidad={item}
+                        onEdit={() => handleEditar(item)}
+                        onDelete={() => handleEliminar(item.id)}
+                    />
+                )}
+                ListEmptyComponent={<Text style={styles.empty}>No hay especialidades registradas</Text>}
+                contentContainerStyle={{ paddingBottom: 100 }}
+            />
+            <TouchableOpacity style={styles.boton} onPress={handleCrear}>
+                <Text style={styles.botonTexto}>Crear Especialidad</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("EditarEspecialidades")}
-            >
-                <Text style={styles.buttonText}>Editar Especialidad</Text>
-            </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f5f5f5", 
+        backgroundColor: "#fff",
     },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 20,
+    empty: {
+        textAlign: "center",
+        marginTop: 20,
+        fontSize: 16,
+        color: "#666",
     },
-    button: {
-        backgroundColor: "#007BFF", 
+    boton: {
+        position: "absolute",
+        bottom: 20,
+        right: 20,
+        backgroundColor: "#66B2FF",
         padding: 15,
-        borderRadius: 5,
-        marginVertical: 10,
-        width: "80%",
-        alignItems: "center", 
+        borderRadius: 50,
+        elevation: 5,
     },
-    buttonText: {
-        color: "#FFFFFF",
-        fontSize: 18,
-        fontWeight: "600",
+    botonTexto: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });

@@ -8,48 +8,32 @@ const Stack = createStackNavigator();
 
 export default function CitasStack () {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: { 
+                    backgroundColor: '#4A90E2', 
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                },
+            }}
+        >
+            {/* --- NOMBRES CORREGIDOS A camelCase --- */}
             <Stack.Screen
-                name= "ListarCitas"
+                name= "listarCitas"
                 component={ListarCitas}
-                options={{
-                    title: "Citas",
-                    headerStyle: {
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold', 
-                    },
-                }}
+                options={{ title: "Citas" }}
             />
             <Stack.Screen
-                name= "DetalleCitas"
+                name= "detalleCitas"
                 component={DetalleCitas}
-                options={{
-                    title: "Detalle citas",
-                    headerStyle: {
-                        backgroundColor: '#4A90E2', 
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+                options={{ title: "Detalle Cita" }}
             />
             <Stack.Screen
-                name= "EditarCitas"
+                name= "editarCitas"
                 component={EditarCitas}
-                options={{
-                    title: "Nuevo/Editar Citas",
-                    headerStyle: { 
-                        backgroundColor: '#4A90E2',
-                    },
-                    headerTintColor: '#fff',
-                    headerTitleStyle: {
-                        fontWeight: 'bold',
-                    },
-                }}
+                options={{ title: "Nuevo/Editar Cita" }}
             />
         </Stack.Navigator>
     );
