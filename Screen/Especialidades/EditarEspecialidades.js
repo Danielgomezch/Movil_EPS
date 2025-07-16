@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Platform, ScrollView, KeyboardAvoidingView } from "react-native";
 import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-// --- CORRECCIÓN ---
+
 // Se importan las funciones con el nombre correcto y en singular.
 import { crearEspecialidad, editarEspecialidad } from "../../Src/Services/EspecialidadService";
 
@@ -18,7 +18,7 @@ export default function EditarEspecialidadesScreen() {
 
     const esEdicion = !!especialidad;
 
-    // --- CORRECCIÓN ---
+
     // Se simplificó y corrigió toda la lógica de guardado.
     const handleGuardar = async () => {
         if (!nombre || !descripcion) {

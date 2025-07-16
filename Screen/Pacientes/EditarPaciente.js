@@ -28,7 +28,7 @@ export default function EditarPasientesScreen() {
       Alert.alert("Error", "Todos los campos son obligatorios");
       return;
     }
-    setLoading(true);  // Activa el loading
+    setLoading(true); 
     try {
       let result;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Alert, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { listarMedicos, eliminarMedico } from "../../Src/Services/MedicoService"; // Corregido a eliminarMedico
+import { listarMedicos, eliminarMedico } from "../../Src/Services/MedicoService";
 import MedicoCard from "../../components/medicoCard";
 
 // Componente principal ListarMedicosScreen
@@ -43,7 +43,7 @@ export default function ListarMedicosScreen() {
                     style: "destructive",
                     onPress: async () => {
                         try {
-                            // CORRECCIÓN: Usar el nombre de función correcto "eliminarMedico"
+                            // Usar el nombre de función correcto "eliminarMedico"
                             const result = await eliminarMedico(id);
                             if (result.success) {
                                 handleCargarMedicos();
