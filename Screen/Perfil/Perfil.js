@@ -7,31 +7,33 @@ import {
   Alert,
   TouchableOpacity,
   ScrollView,
-  TextInput
+  TextInput,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../Src/Services/conexion";
-import { logoutUser  } from "../../Src/Services/AuthService";
+import { logoutUser } from "../../Src/Services/AuthService";
 import { Ionicons } from "@expo/vector-icons";
 
 /**
- * PantallaPerfil - Componente para mostrar y editar el perfil del usuario.
+ * PantallaPerfil - Componente que gestiona la pantalla de perfil del usuario.
  *
- * Este componente permite a los usuarios ver su información de perfil, editar su nombre y correo electrónico,
- * y cerrar sesión. La información se carga desde una API y se almacena en el estado local.
+ * Esta pantalla permite al usuario autenticado ver su información personal, como nombre y correo.
+ * Ofrece funcionalidades para editar estos datos, cambiar la contraseña y cerrar la sesión en la aplicación.
+ * Utiliza el estado local para manejar la interfaz de edición y se comunica con una API para
+ * persistir los cambios.
  *
- * Props:
- * - navigation: Objeto de navegación para manejar la navegación entre pantallas.
- *
- * Ejemplo de uso:
- * <PantallaPerfil navigation={navigation} />
+ * Ejemplo de uso en un Stack Navigator:
+ * <Stack.Screen name="Perfil" component={PantallaPerfil} />
  */
+
 export default function PantallaPerfil({ navigation }) {
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [editedName, setEditedName] = useState('');
-  const [editedEmail, setEditedEmail] = useState('');
+  const [editedName, setEditedName] = useState("");
+  const [editedEmail, setEditedEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const cargarPerfil = async () => {
@@ -59,29 +61,60 @@ export default function PantallaPerfil({ navigation }) {
       const token = await AsyncStorage.getItem("userToken");
       if (!token) return;
 
-      await api.put(`/editarUsuario/${usuario.user.id}`, { 
-        name: editedName, 
-        email: editedEmail 
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await api.put(
+        `/editarUsuario/${usuario.user.id}`,
+        {
+          name: editedName,
+          email: editedEmail,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setUsuario({
         ...usuario,
         user: {
           ...usuario.user,
           name: editedName,
-          email: editedEmail
-        }
+          email: editedEmail,
+        },
       });
-      
+
       setEditing(false);
       Alert.alert("Éxito", "Perfil actualizado correctamente");
     } catch (error) {
       console.error("Error al actualizar:", error);
       Alert.alert("Error", "No se pudo actualizar el perfil");
+    }
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      const token = await AsyncStorage.getItem("userToken");
+      if (!token) return;
+
+      await api.put(
+        `/cambiarContrasena/${usuario.user.id}`,
+        {
+          current_password: currentPassword,
+          new_password: newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      Alert.alert("Éxito", "Contraseña cambiada correctamente");
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (error) {
+      console.error("Error al cambiar la contraseña:", error);
+      Alert.alert("Error", "No se pudo cambiar la contraseña");
     }
   };
 
@@ -97,7 +130,9 @@ export default function PantallaPerfil({ navigation }) {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Perfil de Usuario</Text>
-        <Text style={styles.errorText}>No se pudo cargar la información del perfil</Text>
+        <Text style={styles.errorText}>
+          No se pudo cargar la información del perfil
+        </Text>
       </View>
     );
   }
@@ -133,6 +168,32 @@ export default function PantallaPerfil({ navigation }) {
                 placeholder="Email"
               />
             </View>
+
+            <View style={styles.divider} />
+
+            <View style={styles.infoRow}>
+              <Ionicons name="lock-closed" size={20} color="#666" />
+              <TextInput
+                style={styles.editInput}
+                value={currentPassword}
+                onChangeText={setCurrentPassword}
+                secureTextEntry
+                placeholder="Contraseña Actual"
+              />
+            </View>
+
+            <View style={styles.divider} />
+
+            <View style={styles.infoRow}>
+              <Ionicons name="lock-closed" size={20} color="#666" />
+              <TextInput
+                style={styles.editInput}
+                value={newPassword}
+                onChangeText={setNewPassword}
+                secureTextEntry
+                placeholder="Nueva Contraseña"
+              />
+            </View>
           </>
         ) : (
           <>
@@ -156,13 +217,22 @@ export default function PantallaPerfil({ navigation }) {
       </View>
 
       {editing ? (
-        <TouchableOpacity
-          onPress={handleSave}
-          style={[styles.editButton, styles.saveButton]}
-        >
-          <Ionicons name="save-outline" size={22} color="#FFFFFF" />
-          <Text style={styles.editButtonText}>Guardar Cambios</Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity
+            onPress={handleSave}
+            style={[styles.editButton, styles.saveButton]}
+          >
+            <Ionicons name="save-outline" size={22} color="#FFFFFF" />
+            <Text style={styles.editButtonText}>Guardar Cambios</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleChangePassword}
+            style={[styles.editButton, styles.saveButton]}
+          >
+            <Ionicons name="key-outline" size={22} color="#FFFFFF" />
+            <Text style={styles.editButtonText}>Cambiar Contraseña</Text>
+          </TouchableOpacity>
+        </>
       ) : (
         <TouchableOpacity
           onPress={() => setEditing(true)}
@@ -176,7 +246,7 @@ export default function PantallaPerfil({ navigation }) {
       <TouchableOpacity
         style={styles.logoutButton}
         onPress={async () => {
-          await logoutUser ();
+          await logoutUser();
         }}
       >
         <Ionicons name="log-out-outline" size={20} color="#FFFFFF" />
@@ -189,109 +259,161 @@ export default function PantallaPerfil({ navigation }) {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: '#F0F4F8',
-    alignItems: 'center',
+
+    backgroundColor: "#F0F4F8",
+
+    alignItems: "center",
   },
-  
+
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F0F4F8'
+
+    justifyContent: "center",
+
+    alignItems: "center",
+
+    backgroundColor: "#F0F4F8",
   },
-  
+
   header: {
-    alignItems: 'center',
+    alignItems: "center",
+
     paddingVertical: 30,
   },
-  
+
   title: {
-    color: '#2C3E50',
+    color: "#2C3E50",
+
     fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
+
+    fontWeight: "bold",
+
+    textAlign: "center",
   },
-  
+
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
+
     borderRadius: 15,
+
     padding: 25,
+
     marginHorizontal: 20,
+
     marginBottom: 30,
+
     elevation: 5,
-    width: '90%',
+
+    width: "90%",
   },
-  
+
   infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+
+    alignItems: "center",
+
     paddingVertical: 15,
   },
-  
+
   infoText: {
-    color: '#34495E',
+    color: "#34495E",
+
     fontSize: 18,
+
     marginLeft: 15,
-    fontWeight: '500'
+
+    fontWeight: "500",
   },
-  
+
   editInput: {
     flex: 1,
-    color: '#34495E',
+
+    color: "#34495E",
+
     fontSize: 18,
+
     marginLeft: 15,
-    fontWeight: '500',
+
+    fontWeight: "500",
+
     padding: 0,
+
     borderBottomWidth: 1,
-    borderBottomColor: '#8E44AD'
+
+    borderBottomColor: "#8E44AD",
   },
-  
+
   divider: {
     height: 1,
-    backgroundColor: '#BDC3C7',
-    marginVertical: 10
+
+    backgroundColor: "#BDC3C7",
+
+    marginVertical: 10,
   },
-  
+
   editButton: {
-    flexDirection: 'row',
-    backgroundColor: '#8E44AD',
+    flexDirection: "row",
+
+    backgroundColor: "#8E44AD",
+
     borderRadius: 25,
+
     padding: 15,
+
     marginHorizontal: 20,
-    alignItems: 'center',
+
+    alignItems: "center",
+
     marginBottom: 15,
-    width: '45%',
+
+    width: "45%",
+
     borderWidth: 1,
-    borderColor: '#8E44AD',
+
+    borderColor: "#8E44AD",
   },
-  
+
   saveButton: {
-    backgroundColor: '#8E44AD',
+    backgroundColor: "#8E44AD",
   },
-  
+
   logoutButton: {
-    flexDirection: 'row',
-    backgroundColor: '#E74C3C',
+    flexDirection: "row",
+
+    backgroundColor: "#E74C3C",
+
     borderRadius: 25,
+
     padding: 15,
+
     marginHorizontal: 20,
-    alignItems: 'center',
+
+    alignItems: "center",
+
     marginBottom: 15,
-    width: '45%',
+
+    width: "45%",
+
     borderWidth: 1,
-    borderColor: '#E74C3C',
+
+    borderColor: "#E74C3C",
   },
-  
+
   editButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
+
     fontSize: 16,
-    fontWeight: '600',
+
+    fontWeight: "600",
+
     marginLeft: 10,
   },
-  
+
   errorText: {
-    color: '#E74C3C',
+    color: "#E74C3C",
+
     fontSize: 16,
-    textAlign: 'center',
+
+    textAlign: "center",
   },
 });

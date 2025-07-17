@@ -12,8 +12,6 @@ const Stack = createStackNavigator();
  * Este componente utiliza un stack navigator para gestionar las pantallas relacionadas con las especialidades,
  * incluyendo la lista de especialidades, el detalle de una especialidad específica y la edición o creación de especialidades.
  *
- * Ejemplo de uso:
- * <EspecialidadesStack />
  */
 export default function EspecialidadesStack () {
     return (
