@@ -6,11 +6,20 @@ import EditarEspecialidades from "../../../Screen/Especialidades/EditarEspeciali
 
 const Stack = createStackNavigator();
 
+/**
+ * EspecialidadesStack - Componente que define la navegación de la sección de especialidades.
+ *
+ * Este componente utiliza un stack navigator para gestionar las pantallas relacionadas con las especialidades,
+ * incluyendo la lista de especialidades, el detalle de una especialidad específica y la edición o creación de especialidades.
+ *
+ * Ejemplo de uso:
+ * <EspecialidadesStack />
+ */
 export default function EspecialidadesStack () {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name= "ListarEspecialidades"
+                name="ListarEspecialidades"
                 component={ListarEspecialidades}
                 options={{
                     title: "Especialidades",
@@ -24,7 +33,7 @@ export default function EspecialidadesStack () {
                 }}
             />
             <Stack.Screen
-                name= "DetalleEspecialidades"
+                name="DetalleEspecialidades"
                 component={DetalleEspecialidades}
                 options={{
                     title: "Detalle Especialidades",
@@ -38,7 +47,7 @@ export default function EspecialidadesStack () {
                 }}
             />
             <Stack.Screen
-                name= "EditarEspecialidades"
+                name="EditarEspecialidades"
                 component={EditarEspecialidades}
                 options={{
                     title: "Nuevo/Editar Especialidades",

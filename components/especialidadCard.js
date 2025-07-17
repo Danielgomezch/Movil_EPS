@@ -2,7 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';  
 
-// Componente principal EspecialidadCard
+/**
+ * especialidadCard - Componente para mostrar información de una especialidad médica.
+ *
+ * Este componente representa una tarjeta que muestra información sobre una especialidad,
+ * incluyendo la opción de editar o eliminar la especialidad. Permite expandir para ver más detalles.
+ *
+ * Props:
+ * - especialidad (object): Objeto que contiene la información de la especialidad, incluyendo nombre y descripción.
+ * - onEdit (function): Función que se ejecuta al presionar el botón de editar.
+ * - onDelete (function): Función que se ejecuta al presionar el botón de eliminar.
+ *
+ * Ejemplo de uso:
+ * <especialidadCard 
+ *   especialidad={{ nombre: 'Cardiología', descripcion: 'Especialidad que se ocupa del corazón y sus enfermedades.' }} 
+ *   onEdit={() => console.log('Editar')} 
+ *   onDelete={() => console.log('Eliminar')} 
+ * />
+ */
 export default function especialidadCard({ especialidad, onEdit, onDelete }) {
     // Estado para mostrar/ocultar detalles de la especialidad
     const [showDetails, setShowDetails] = useState(false);

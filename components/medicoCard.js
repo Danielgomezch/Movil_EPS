@@ -2,7 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';  
 
-// --- COMPONENTE LIMPIO: SIN IMPORTACIONES DE SERVICIOS ---
+/**
+ * MedicoCard - Componente para mostrar información de un médico.
+ *
+ * Este componente representa una tarjeta que muestra información sobre un médico,
+ * incluyendo la opción de editar o eliminar la información del médico. Permite expandir para ver más detalles.
+ *
+ * Props:
+ * - medico (object): Objeto que contiene la información del médico, incluyendo nombre, apellido, estado, especialidad, documento, registro médico, teléfono, correo y consultorio.
+ * - onEdit (function): Función que se ejecuta al presionar el botón de editar.
+ * - onDelete (function): Función que se ejecuta al presionar el botón de eliminar.
+ *
+ * Ejemplo de uso:
+ * <MedicoCard 
+ *   medico={{ nombre: 'Juan', apellido: 'Pérez', activo: 'Activo', idEspecialidad: 1, tipo_documento: 'DNI', num_documento: '12345678', reg_medicos: 'RM12345', telefono: '987654321', correo: 'juan.perez@example.com', idConsultorio: 2 }} 
+ *   onEdit={() => console.log('Editar')} 
+ *   onDelete={() => console.log('Eliminar')} 
+ * />
+ */
 export default function MedicoCard({ medico, onEdit, onDelete }) {
     const [showDetails, setShowDetails] = useState(false);
 

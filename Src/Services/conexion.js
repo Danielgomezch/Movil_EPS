@@ -1,50 +1,53 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_BASE_URL = "http://172.30.5.220:8000/api"; // Remblasar url
+const API_BASE_URL = "http://192.168.18.78:8000/api"; // Reemplazar URL
 
+// Crear una instancia de Axios con la configuración base
 const api = axios.create({
   baseURL: API_BASE_URL,
-    headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    },
+  headers: {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
 });
 
+// Rutas públicas que no requieren autenticación
 const RutasPublicas = ['/login', '/registrar'];
 
-
+// Interceptor de solicitud para agregar el token de usuario
 api.interceptors.request.use(
-    async (config) => {
-        const iSRutaPublica = RutasPublicas.some(ruta => config.url.includes(ruta));
-        
-        if (!iSRutaPublica) {
-            const userToken = await AsyncStorage.getItem("userToken");
-            if (userToken) {
-                config.headers.Authorization = `Bearer ${userToken}`;
-            }
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  async (config) => {
+    const iSRutaPublica = RutasPublicas.some(ruta => config.url.includes(ruta));
+    
+    if (!iSRutaPublica) {
+      const userToken = await AsyncStorage.getItem("userToken");
+      if (userToken) {
+        config.headers.Authorization = `Bearer ${userToken}`;
+      }
     }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-
+// Interceptor de respuesta para manejar errores de autenticación
 api.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-        const iSRutaPublica  = RutasPublicas.some(ruta => originalRequest.url.includes(ruta));
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const iSRutaPublica = RutasPublicas.some(ruta => originalRequest.url.includes(ruta));
 
-        if (error.response && error.response.status === 401 && !originalRequest._retry && !iSRutaPublica) {
-            originalRequest._retry = true;
+    if (error.response && error.response.status === 401 && !originalRequest._retry && !iSRutaPublica) {
+      originalRequest._retry = true;
 
-            console.log("Token expirado o no autorizado, Redirigiendo al login");
-            await AsyncStorage.removeItem("userToken");
-        }
-        return Promise.reject(error);
+      console.log("Token expirado o no autorizado, Redirigiendo al login");
+      await AsyncStorage.removeItem("userToken");
     }
+    return Promise.reject(error);
+  }
 );
+
 export default api;

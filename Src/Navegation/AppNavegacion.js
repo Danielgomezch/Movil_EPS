@@ -5,6 +5,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect, useRef, use } from "react";
 import { ActivityIndicator, View, StyleSheet, AppState } from "react-native";
 
+/**
+ * AppNavegacion - Componente principal que gestiona la navegación de la aplicación.
+ *
+ * Este componente verifica el estado de autenticación del usuario y decide si mostrar la navegación
+ * principal o la navegación de autenticación. También maneja el estado de carga y la recuperación del token
+ * de usuario desde AsyncStorage.
+ *
+ * Ejemplo de uso:
+ * <AppNavegacion />
+ */
+
 export default function AppNavegacion() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);

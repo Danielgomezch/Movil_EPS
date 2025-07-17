@@ -16,6 +16,18 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { crearMedico, editarMedico } from "../../Src/Services/MedicoService";
 import { listarEspecialidad } from "../../Src/Services/EspecialidadService";
 
+/**
+ * EditarMedicosScreen - Componente para editar o crear médicos.
+ *
+ * Este componente permite a los usuarios editar un médico existente o crear uno nuevo.
+ * Incluye campos para ingresar información sobre el médico, como nombre, apellido, número de documento, tipo de documento, teléfono, correo, ID de consultorio, estado y registro médico.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <EditarMedicosScreen />
+ */
 export default function EditarMedicosScreen() {
   const navigation = useNavigation();
   const route = useRoute();

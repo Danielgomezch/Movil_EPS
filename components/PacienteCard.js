@@ -2,7 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';  
 
-// Componente principal PasientesCard
+/**
+ * PasientesCard - Componente para mostrar información de un paciente.
+ *
+ * Este componente representa una tarjeta que muestra información sobre un paciente,
+ * incluyendo la opción de editar o eliminar la información del paciente. Permite expandir para ver más detalles.
+ *
+ * Props:
+ * - pasientes (object): Objeto que contiene la información del paciente, incluyendo nombre, apellido, número de documento, tipo de documento, género, número de teléfono y correo.
+ * - onEdit (function): Función que se ejecuta al presionar el botón de editar.
+ * - onDelete (function): Función que se ejecuta al presionar el botón de eliminar.
+ *
+ * Ejemplo de uso:
+ * <PasientesCard 
+ *   pasientes={{ nombre: 'Juan', apellido: 'Pérez', num_documento: '12345678', tipo_documento: 'DNI', genero: 'Masculino', num_telefono: '987654321', correo: 'juan.perez@example.com' }} 
+ *   onEdit={() => console.log('Editar')} 
+ *   onDelete={() => console.log('Eliminar')} 
+ * />
+ */
 export default function PasientesCard({ pasientes, onEdit, onDelete }) {
     // Estado para mostrar/ocultar detalles del paciente
     const [showDetails, setShowDetails] = useState(false);

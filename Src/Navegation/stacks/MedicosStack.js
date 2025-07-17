@@ -8,6 +8,15 @@ import EditarMedicos from "../../../Screen/Medicos/EditarMedicos";
 
 const Stack = createStackNavigator();
 
+/**
+ * MedicosStack - Componente que define la navegación de la sección de médicos.
+ *
+ * Este componente utiliza un stack navigator para gestionar las pantallas relacionadas con los médicos,
+ * incluyendo la lista de médicos, el detalle de un médico específico y la edición o creación de médicos.
+ *
+ * Ejemplo de uso:
+ * <MedicosStack />
+ */
 export default function MedicosStack () {
     return (
         <Stack.Navigator>

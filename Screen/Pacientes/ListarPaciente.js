@@ -3,7 +3,19 @@ import { View, Text, Alert, ActivityIndicator, FlatList, StyleSheet, TouchableOp
 import { useNavigation } from "@react-navigation/native";  
 import { listarPasientes, eliminarPasientes } from "../../Src/Services/PacienteService";  
 import PasientesCard from "../../components/PacienteCard";  
-// Componente principal ListarPasientesScreen
+
+/**
+ * ListarPasientesScreen - Componente para listar los pacientes registrados.
+ *
+ * Este componente permite a los usuarios ver una lista de pacientes registrados,
+ * así como la opción de eliminar o editar cada paciente. También permite crear un nuevo paciente.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <ListarPasientesScreen />
+ */
 export default function ListarPasientesScreen() {
   const [pasientes, setPasientes] = useState([]);  // Estado para almacenar la lista de pacientes
   const [loading, setLoading] = useState(true);  // Estado para manejar la carga

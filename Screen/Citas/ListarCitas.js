@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Alert, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-// --- CORRECCIÓN AQUÍ ---
-// Se importa desde el servicio de Citas, no de Pacientes.
 import { listarCitas, eliminarCitas } from "../../Src/Services/CitaService"; 
 import CitasCard from "../../components/CitaCard"; // Asegúrate de que este componente exista
 
+/**
+ * ListarCitasScreen - Componente para listar las citas registradas.
+ *
+ * Este componente permite a los usuarios ver una lista de citas registradas,
+ * así como la opción de eliminar o editar cada cita. También permite crear una nueva cita.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <ListarCitasScreen />
+ */
 export default function ListarCitasScreen() {
     const [citas, setCitas] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -60,15 +69,13 @@ export default function ListarCitasScreen() {
     };
     
     const handleEditar = (cita) => {
-    // Asegúrate de que aquí diga "editarCitas"
-    navigation.navigate("editarCitas", { cita }); 
-  };
+        navigation.navigate("editarCitas", { cita }); 
+    };
 
-  // Función para crear una nueva cita
-  const handleCrear = () => {
-    // Asegúrate de que aquí también diga "editarCitas"
-    navigation.navigate("editarCitas");
-  };
+    // Función para crear una nueva cita
+    const handleCrear = () => {
+        navigation.navigate("editarCitas");
+    };
 
     if (loading) {
         return (

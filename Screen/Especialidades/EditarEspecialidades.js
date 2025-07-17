@@ -1,11 +1,20 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Platform, ScrollView, KeyboardAvoidingView } from "react-native";
 import React, { useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-
-// Se importan las funciones con el nombre correcto y en singular.
 import { crearEspecialidad, editarEspecialidad } from "../../Src/Services/EspecialidadService";
 
-// Componente principal EditarEspecialidadesScreen
+/**
+ * EditarEspecialidadesScreen - Componente para editar o crear especialidades.
+ *
+ * Este componente permite a los usuarios editar una especialidad existente o crear una nueva.
+ * Incluye campos para ingresar el nombre y la descripción de la especialidad.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <EditarEspecialidadesScreen />
+ */
 export default function EditarEspecialidadesScreen() {
     const navigation = useNavigation();
     const route = useRoute();
@@ -13,13 +22,12 @@ export default function EditarEspecialidadesScreen() {
     const especialidad = route.params?.especialidad;
 
     const [nombre, setNombre] = useState(especialidad?.nombre || "");
-    const [descripcion, setDescripcion] = useState(especialidad?.descripdcion || "");
+    const [descripcion, setDescripcion] = useState(especialidad?.descripcion || "");
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!especialidad;
 
-
-    // Se simplificó y corrigió toda la lógica de guardado.
+    // Lógica para guardar la especialidad
     const handleGuardar = async () => {
         if (!nombre || !descripcion) {
             Alert.alert("Error", "Todos los campos son obligatorios");

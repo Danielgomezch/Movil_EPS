@@ -10,7 +10,15 @@ import EditarPasientes from '../../../Screen/Pacientes/EditarPaciente';
 // Crea el stack navigator
 const Stack = createNativeStackNavigator();
 
-// Componente principal PacienteStack
+/**
+ * PacienteStack - Componente que define la navegación de la sección de pacientes.
+ *
+ * Este componente utiliza un stack navigator para gestionar las pantallas relacionadas con los pacientes,
+ * incluyendo la lista de pacientes, el detalle de un paciente específico y la edición o creación de pacientes.
+ *
+ * Ejemplo de uso:
+ * <PacienteStack />
+ */
 export default function PacienteStack() {
     return (
         <Stack.Navigator>
@@ -28,7 +36,7 @@ export default function PacienteStack() {
             />
             {/* Pantalla para mostrar detalles de un paciente */}
             <Stack.Screen 
-                name="DetallePasientes"  
+                name="detallePasientes"  
                 component={DetallePasientes} 
                 options={{ title: "Detalles Pacientes" }} 
             />

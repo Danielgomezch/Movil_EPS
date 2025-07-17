@@ -4,6 +4,18 @@ import { useNavigation } from "@react-navigation/native";
 import { listarEspecialidad, eliminarEspecialidad } from "../../Src/Services/EspecialidadService";
 import EspecialidadCard from "../../components/especialidadCard";
 
+/**
+ * ListarEspecialidadesScreen - Componente para listar las especialidades registradas.
+ *
+ * Este componente permite a los usuarios ver una lista de especialidades registradas,
+ * así como la opción de eliminar o editar cada especialidad. También permite crear una nueva especialidad.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <ListarEspecialidadesScreen />
+ */
 export default function ListarEspecialidadesScreen() {
     const [especialidades, setEspecialidades] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -66,13 +78,11 @@ export default function ListarEspecialidadesScreen() {
     };
 
     const handleEditar = (especialidad) => {
-
         // Se usa el nombre de la ruta de edición correcto
         navigation.navigate("EditarEspecialidades", { especialidad });
     };
 
     const handleCrear = () => {
-
         // Se usa el nombre de la ruta de edición/creación correcto
         navigation.navigate("EditarEspecialidades");
     };

@@ -2,7 +2,19 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ActivityInd
 import React, { useState } from "react";  
 import { useNavigation, useRoute } from "@react-navigation/native";  
 import { crearPasientes, editarPasientes } from "../../Src/Services/PacienteService";  
-// Componente principal EditarPasientesScreen
+
+/**
+ * EditarPasientesScreen - Componente para editar o crear pacientes.
+ *
+ * Este componente permite a los usuarios editar un paciente existente o crear uno nuevo.
+ * Incluye campos para ingresar información sobre el paciente, como nombre, apellido, número de documento, tipo de documento, género, teléfono y correo electrónico.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <EditarPasientesScreen />
+ */
 export default function EditarPasientesScreen() {
   const navigation = useNavigation();  // Hook para la navegación
   const route = useRoute();  // Hook para acceder a los parámetros de la ruta

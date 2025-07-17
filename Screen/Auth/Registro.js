@@ -1,10 +1,20 @@
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
-import React , { useState } from "react";
+import React, { useState } from "react";
 import BottonComponent from "../../components/BottonComponent";
-import {registroUser} from "../../Src/Services/AuthService";
+import { registroUser  } from "../../Src/Services/AuthService";
 
-
-
+/**
+ * RegistroScreen - Componente para la pantalla de registro de usuarios.
+ *
+ * Este componente permite a los nuevos usuarios registrarse en la aplicación
+ * ingresando su nombre, rol, correo electrónico y contraseña.
+ *
+ * Props:
+ * - navigation (object): Objeto de navegación que permite navegar a otras pantallas.
+ *
+ * Ejemplo de uso:
+ * <RegistroScreen navigation={navigation} />
+ */
 export default function RegistroScreen({ navigation }) {
     const [name, setName] = useState("");
     const [role, setRole] = useState("");
@@ -16,9 +26,7 @@ export default function RegistroScreen({ navigation }) {
             return Alert.alert("Error", "Todos los campos son obligatorios");
         }
 
-
-        const result = await registroUser(name, email, password, role);
- 
+        const result = await registroUser (name, email, password, role);
 
         if (result.success) {
             Alert.alert("Éxito", "Registro exitoso", [

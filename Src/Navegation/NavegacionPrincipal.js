@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 
 import InicioStack from "./stacks/InicioStack";
 import PerfilesStack from "./stacks/PerfilStack";
@@ -8,6 +8,15 @@ import ConfiguracionesStack from "./stacks/ConfiguracionStack";
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * NavegacionPrincipal - Componente que define la navegación principal de la aplicación.
+ *
+ * Este componente utiliza un tab navigator para gestionar las diferentes secciones de la aplicación,
+ * incluyendo la pantalla de inicio, el perfil del usuario y la configuración. Cada sección tiene su propio stack de navegación.
+ *
+ * Ejemplo de uso:
+ * <NavegacionPrincipal />
+ */
 export default function NavegacionPrincipal() {
   return (
     <Tab.Navigator

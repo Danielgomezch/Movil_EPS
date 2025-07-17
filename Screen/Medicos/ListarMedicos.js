@@ -4,7 +4,18 @@ import { useNavigation } from "@react-navigation/native";
 import { listarMedicos, eliminarMedico } from "../../Src/Services/MedicoService";
 import MedicoCard from "../../components/medicoCard";
 
-// Componente principal ListarMedicosScreen
+/**
+ * ListarMedicosScreen - Componente para listar los médicos registrados.
+ *
+ * Este componente permite a los usuarios ver una lista de médicos registrados,
+ * así como la opción de eliminar o editar cada médico. También permite crear un nuevo médico.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <ListarMedicosScreen />
+ */
 export default function ListarMedicosScreen() {
     const [medicos, setMedicos] = useState([]);
     const [loading, setLoading] = useState(true);

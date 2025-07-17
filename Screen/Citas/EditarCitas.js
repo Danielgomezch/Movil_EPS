@@ -15,6 +15,18 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { crearCitas, editarCitas } from "../../Src/Services/CitaService";
 
+/**
+ * EditarCitasScreen - Componente para editar o crear citas.
+ *
+ * Este componente permite a los usuarios editar una cita existente o crear una nueva.
+ * Incluye campos para ingresar información sobre la cita, como ID de paciente, médico, consultorio, fecha, hora, estado, motivo, observación y tipo de consulta.
+ *
+ * Props:
+ * - No se requieren props directamente, ya que utiliza el contexto de navegación.
+ *
+ * Ejemplo de uso:
+ * <EditarCitasScreen />
+ */
 export default function EditarCitasScreen() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -41,7 +53,7 @@ export default function EditarCitasScreen() {
   const esEdicion = !!cita;
 
   const handleGuardar = async () => {
-    //  Se valida que los tres IDs estén presentes
+    // Se valida que los tres IDs estén presentes
     if (
       !idPasientes ||
       !idMedicos ||
@@ -59,7 +71,7 @@ export default function EditarCitasScreen() {
     setLoading(true);
 
     try {
-      //  Se envían los tres IDs a la API
+      // Se envían los tres IDs a la API
       const datosCita = {
         idPasientes: parseInt(idPasientes, 10),
         idMedicos: parseInt(idMedicos, 10),
@@ -112,7 +124,7 @@ export default function EditarCitasScreen() {
           {esEdicion ? "Editar Cita" : "Nueva Cita"}
         </Text>
 
-        {/*  Se añaden los tres campos de ID */}
+        {/* Se añaden los tres campos de ID */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>ID del Paciente</Text>
           <TextInput
