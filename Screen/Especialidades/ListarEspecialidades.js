@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Alert, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-
-// Se importan las funciones con los nombres correctos del servicio (singular)
 import { listarEspecialidad, eliminarEspecialidad } from "../../Src/Services/EspecialidadService";
 import EspecialidadCard from "../../components/especialidadCard";
 

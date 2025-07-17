@@ -13,7 +13,7 @@ export default function EditarEspecialidadesScreen() {
     const especialidad = route.params?.especialidad;
 
     const [nombre, setNombre] = useState(especialidad?.nombre || "");
-    const [descripcion, setDescripcion] = useState(especialidad?.descripcion || "");
+    const [descripcion, setDescripcion] = useState(especialidad?.descripdcion || "");
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!especialidad;

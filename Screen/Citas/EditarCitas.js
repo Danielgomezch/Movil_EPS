@@ -20,7 +20,7 @@ export default function EditarCitasScreen() {
   const route = useRoute();
   const cita = route.params?.cita;
 
-  // Se añaden los tres estados para los IDs 
+  // Se añaden los tres estados para los IDs
   const [idPasientes, setIdPasientes] = useState(
     cita?.idPasientes?.toString() || ""
   );
@@ -59,7 +59,7 @@ export default function EditarCitasScreen() {
     setLoading(true);
 
     try {
-      //  Se envían los tres IDs a la API 
+      //  Se envían los tres IDs a la API
       const datosCita = {
         idPasientes: parseInt(idPasientes, 10),
         idMedicos: parseInt(idMedicos, 10),
